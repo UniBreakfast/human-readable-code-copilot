@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+  <title>Human Readable Code</title>
+
+  <style>
+    #fnHint {
+      position: absolute;
+      inset: 2px 40px -60vh;
+      background: #eee;
+      padding-right: 15px;
+      max-width: 60vw;
+      max-height: 60vh;
+      overflow: auto;
+      border: 1px solid;
+    }
+
+    label {
+      padding-left: 100px;
+      display: block;
+      position: relative;
+    }
+
+    :hover>code {
+      display: block;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-left: 200px;
+    }
+
+    #output>* {
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <textarea id="ta" cols="80" rows="6" style="font-size: 20px">
+
+    </textarea>
+
+    <label>
+      <i><script>document.write('--- view function ---'.repeat(5))</script></i>
+      <code hidden><pre id="fnHint"></pre></code hidden>
+    </label>
+
+    <button onclick="output.innerHTML=''">clear</button>
+    <button onclick="eval(ta.value)">RUN</button>
+
+    <div id="output"></div>
+  </div>
+
+  <script id="callScript">`
+    add_a('lightgreen').flex_container_with_wrapping_to_the('#output')
+      .then_add_to_it_a('red').square_with_the_size_of(100)
+      .pixels_every(50).milliseconds_with_the_gap_of(10)
+      .pixels_until_there_are(100).of_them`
+  </script>
+
+  <script id="declareScript">
+    function add_a(color) {
+      return {
+        flex_container_with_wrapping_to_the(selector) {
+          const container = document.createElement('div')
+
+          container.style.display = 'flex'
+          container.style.flexWrap = 'wrap'
+          container.style.backgroundColor = color
+
+          document.querySelector(selector).append(container)
+
+          return {
+            then_add_to_it_a(color) {
+              return {
+                square_with_the_size_of(size) {
+                  return {
+                    pixels_every(interval) {
+                      return {
+                        milliseconds_with_the_gap_of(gap) {
+                          return {
+                            pixels_until_there_are(num) {
+                              container.style.gap = gap + 'px'
+
+                              for (let i = 0; i < num; i++) {
+                                const square = document.createElement('div')
+
+                                square.style.width = size + 'px'
+                                square.style.height = size + 'px'
+                                square.style.backgroundColor = color
+
+                                setTimeout(() => {
+                                  container.appendChild(square)
+                                }, i * interval)
+                              }
+
+                              return {}
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <script>
+    const spacesAtStartOfEveryLine = /^\s{2,}/mg
+
+    ta.value = callScript.innerText.trim()
+      .slice(1, -1).trim().replace(spacesAtStartOfEveryLine, '  ')
+
+    fnHint.innerText = declareScript.innerText
+  </script>
+</body>
+
+</html>
